@@ -1,0 +1,11 @@
+.minHeader {
+  min-height: 5rem;
+}
+.cardBody {
+  height: 20rem;
+}
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
