@@ -1,10 +1,21 @@
 import Head from "next/head";
 import { parseSearchString } from "../../utils";
 import ProductsList from "components/ProductsList";
+import clientPromise from "lib/mongodb";
 
 export const getServerSideProps = async ({query}) => {
   const searchStr = query.searchStr
 
+  const client = await clientPromise;
+  const db = client.db("matheus");
+
+  await db
+  .collection("search_history")
+  .updateOne(
+    { searchStr: searchStr },
+    { $set: { searchStr: searchStr } },
+    { upsert: true }
+  );
 
   const targetRes = await fetch(
     `https://redsky.target.com/redsky_aggregations/v1/web/plp_search_v2?key=9f36aeafbe60771e321a7cc95a78140772ab3e96&channel=WEB&count=24&default_purchasability_filter=true&include_sponsored=true&keyword=` +
@@ -41,7 +52,7 @@ export default function ProductListPage({
   return (
     <>
       <Head>
-        <title>Search: {searchStr}</title>
+        <title>Search: {String(searchStr)}</title>
       </Head>
       <section>
         <h1 className="text-center py-5">Search result for {searchStr} Products</h1>
