@@ -3,7 +3,7 @@ import Link from "next/link";
 import styles from "styles/SearchBox.module.css";
 
 const SearchHistoryItem = ({ term, index, onDeleteSearchTerm }) => {
-  const link = "/?searchStr=" + term.searchStr;
+  const link = `/products/${term.searchStr}`;
   return (
     <div className="btn btn-secondary m-2">
       <a href={link} className={styles.termA}>
@@ -33,7 +33,7 @@ const SearchBox = ({ history, onDeleteSearchTerm }) => {
       <div className="card mb-4">
         <div className="card-header">Search</div>
         <div className="card-body">
-          <form action="/" method="post" className="d-flex flex-row">
+          <form action={`/products/${search}`} method="post" className="d-flex flex-row">
             <input
               onChange={findSearch}
               className="form-control"
@@ -50,10 +50,7 @@ const SearchBox = ({ history, onDeleteSearchTerm }) => {
               disabled={!(search?.length > 0)}
             >
               <Link
-                href={{
-                  pathname: "/",
-                  query: { searchStr: search?.toLowerCase() },
-                }}
+                href={`/products/${search?.toLowerCase()}`}
               >
                 Go!
               </Link>
